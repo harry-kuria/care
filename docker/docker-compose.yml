@@ -1,0 +1,68 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: safia_system
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mysql
+
+  user-service:
+    build:
+      context: ./services/user-service
+    ports:
+      - "5002:5002"
+    depends_on:
+      - mysql
+
+  organization-service:
+    build:
+      context: ./services/organization-service
+    ports:
+      - "5003:5003"
+    depends_on:
+      - mysql
+
+  health-data-service:
+    build:
+      context: ./services/health-data-service
+    ports:
+      - "5004:5004"
+    depends_on:
+      - mysql
+
+  sports-data-service:
+    build:
+      context: ./services/sports-data-service
+    ports:
+      - "5005:5005"
+    depends_on:
+      - mysql
+
+  report-service:
+    build:
+      context: ./services/report-service
+    ports:
+      - "5006:5006"
+    depends_on:
+      - mysql
+
+  audit-service:
+    build:
+      context: ./services/audit-service
+    ports:
+      - "5007:5007"
+    depends_on:
+      - mysql
